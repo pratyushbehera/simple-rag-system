@@ -22,7 +22,12 @@ export async function createApp() {
     container.searchService
   );
   const waController = new WhatsAppController(container.responseService);
-
+  app.get("/", (request, response) => {
+    response.status(200).json({ status: "success" });
+  });
+  app.get("/api", (request, response) => {
+    response.status(200).json({ status: "success" });
+  });
   app.use("/api/documents", createDocumentRoutes(controller));
   app.use("/api/whatsapp", createWhatsappRoutes(waController));
 
