@@ -13,8 +13,9 @@
     "format": "prettier --write src"
   },
   "keywords": [],
-  "author": "",
+  "author": "Pratyush",
   "license": "ISC",
+  "packageManager": "pnpm@11.6.0",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
@@ -22,7 +23,7 @@
       "onFail": "download"
     }
   },
-  "type": "module",
+  "type": "commonjs",
   "dependencies": {
     "@cedrugs/pdf-parse": "^1.0.0",
     "@langchain/textsplitters": "^1.0.1",
