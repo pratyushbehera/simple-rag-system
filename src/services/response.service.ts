@@ -10,7 +10,7 @@ export class ResponseService {
 
   async reply(message: string): Promise<ResponseMessage> {
     const intent = this.router.detect(message);
-
+    console.log(intent, message);
     switch (intent) {
       case Intent.GREETING:
         return {
