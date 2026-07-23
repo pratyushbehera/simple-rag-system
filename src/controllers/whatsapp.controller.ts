@@ -10,9 +10,11 @@ export class WhatsAppController {
     const message = typeof messageValue === "string" ? messageValue : "";
     const reply = await this.responseService.reply(message);
 
+    console.log(typeof reply);
+
     res.type("text/xml").send(`
       <Response>
-        <Message>${reply}</Message>
+        <Message>${typeof reply === "string" ? reply : reply?.text}</Message>
       </Response>
     `);
   }
