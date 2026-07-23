@@ -5,6 +5,7 @@ export class WhatsAppController {
   constructor(private readonly responseService: ResponseService) {}
 
   async webhook(req: Request, res: Response) {
+    console.log(req?.body);
     const messageValue = req.body?.Body;
 
     const message = typeof messageValue === "string" ? messageValue : "";
