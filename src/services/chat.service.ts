@@ -21,7 +21,7 @@ export class ChatService {
     }
 
     const context = this.buildContext(results);
-
+    console.log(context, question);
     return this.llmProvider.generate({ context, question });
   }
 }
