@@ -9,7 +9,7 @@ export class EmbeddingService {
   }
 
   async embed(text: string): Promise<number[]> {
-    return this.provider.embed(text);
+    return this.provider.embed(text, "retrieval.query");
   }
 
   async embedChunks(chunks: Chunk[]): Promise<EmbeddedChunk[]> {
@@ -18,7 +18,8 @@ export class EmbeddingService {
     }
 
     const vectors = await this.provider.embedBatch(
-      chunks.map((c) => c.content)
+      chunks.map((c) => c.content),
+      "retrieval.passage"
     );
 
     return chunks.map((chunk, index) => ({

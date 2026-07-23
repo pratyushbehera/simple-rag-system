@@ -14,35 +14,43 @@ export class QdrantRepository implements VectorRepository {
   ) {}
 
   async initialize(): Promise<void> {
-    const collections = await this.client.getCollections();
-
-    const exists = collections.collections.some(
-      (c) => c.name === env.QDRANT_COLLECTION
-    );
-
-    if (exists) {
-      return;
+    try {
+      await this.client.getCollection(env.QDRANT_COLLECTION);
+    } catch (err: any) {
+      if (err.status === 404) {
+        await this.client.createCollection(env.QDRANT_COLLECTION, {
+          vectors: {
+            size: this.vectorSize,
+            distance: "Cosine",
+          },
+        });
+      } else {
+        throw err;
+      }
     }
 
-    if (!exists) {
-      await this.client.createCollection(env.QDRANT_COLLECTION, {
-        vectors: {
-          size: this.vectorSize,
-          distance: "Cosine",
-        },
+    // Always ensure indexes exist
+    await Promise.all([
+      this.ensureIndex("fileHash"),
+      this.ensureIndex("documentId"),
+    ]);
+  }
+
+  private async ensureIndex(field: string) {
+    try {
+      await this.client.createPayloadIndex(env.QDRANT_COLLECTION, {
+        field_name: field,
+        field_schema: "keyword",
       });
+    } catch (err: any) {
+      // Ignore "already exists"
+      if (
+        err.status !== 409 &&
+        !err?.data?.status?.error?.includes("already exists")
+      ) {
+        throw err;
+      }
     }
-
-    // Always ensure payload indexes exist
-    await this.client.createPayloadIndex(env.QDRANT_COLLECTION, {
-      field_name: "fileHash",
-      field_schema: "keyword",
-    });
-
-    await this.client.createPayloadIndex(env.QDRANT_COLLECTION, {
-      field_name: "documentId",
-      field_schema: "keyword",
-    });
   }
 
   async upsert(

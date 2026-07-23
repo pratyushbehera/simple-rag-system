@@ -11,6 +11,9 @@ const schema = z.object({
   OPENROUTER_API_KEY: z.string(),
   WATCH_FOLDER: z.string(),
   LOG_LEVEL: z.string().default("info"),
+  JINA_API_KEY: z.string(),
+  JINA_MODEL: z.string(),
+  JINA_API_URL: z.url()
 });
 
 export const env = schema.parse(process.env);

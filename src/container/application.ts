@@ -6,13 +6,14 @@ import { EmbeddingService } from "../services/embedding.service";
 import { DocumentIngestionService } from "../services/document-ingestion.service";
 import { DocumentSearchService } from "../services/document-search.service";
 
-import { FastEmbedProvider } from "../providers/fastembed.provider";
+// import { FastEmbedProvider } from "../providers/fastembed.provider";
 
 import { QdrantRepository } from "../repositories/qdrant.repository";
 import { OpenRouterProvider } from "../providers/openrouter.provider";
 import { ChatService } from "../services/chat.service";
 import { MessageRouterService } from "../services/message-router.service";
 import { ResponseService } from "../services/response.service";
+import { JinaEmbeddingProvider } from "../providers/jina.provider";
 
 export class ApplicationContainer {
   public readonly readerService: ReaderService;
@@ -33,7 +34,7 @@ export class ApplicationContainer {
   constructor() {
     const llmProvider = new OpenRouterProvider();
 
-    const provider = new FastEmbedProvider();
+    const provider = new JinaEmbeddingProvider();
 
     this.embeddingService = new EmbeddingService(provider);
 
